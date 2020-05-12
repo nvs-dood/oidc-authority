@@ -80,6 +80,30 @@ namespace is4aspid
                     AllowedCorsOrigins = { "http://localhost:5002" },
 
                     AllowedScopes = { "openid", "profile", "api1" }
+                },
+                new Client
+                {
+                    ClientId = "0oaaksrhn9lfhFOA64x6",
+                    ClientName = "Android",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    RequireClientSecret = false,
+                    RedirectUris = new List<string>
+                    {
+                        "com.gmail.hofmarchermatthias.myapp:/login",
+                        "com.gmail.hofmarchermatthias.myapp:/logout"
+                    },
+
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        "com.gmail.hofmarchermatthias.myapp:/login"
+                    },
+                    AllowOfflineAccess = true,
+                    AllowedScopes = new List<string>
+                    {
+                        "openid","profile"
+                    }
+
                 }
             };
     }
