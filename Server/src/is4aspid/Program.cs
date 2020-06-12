@@ -73,8 +73,6 @@ namespace is4aspid
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    //Also listen for outside calls
-                    webBuilder.UseUrls("http://*:5000");
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseSerilog();
                 });

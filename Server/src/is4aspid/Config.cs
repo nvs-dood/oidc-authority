@@ -4,6 +4,8 @@
 
 using IdentityServer4.Models;
 using System.Collections.Generic;
+using IdentityModel;
+using IdentityServer4;
 
 namespace is4aspid
 {
@@ -14,20 +16,29 @@ namespace is4aspid
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResources.Email(),
+                new IdentityResource
+                {
+                    Name = "dood",
+                    UserClaims = new[]{"doodrole"},
+                    DisplayName = "DOOD role"
+                },
             };
 
 
         public static IEnumerable<ApiResource> Apis =>
-            new ApiResource[]
+            new[]
             {
-                new ApiResource("api1", "My API #1")
+                //new ApiResource("api1", "My API #1")
+                new ApiResource("demoApi", "My demo api for the pos project"),
+                new ApiResource("todos-api", "Go Example API")
             };
 
 
         public static IEnumerable<Client> Clients =>
-            new Client[]
+            new[]
             {
-                // client credentials flow client
+                /*// client credentials flow client
                 new Client
                 {
                     ClientId = "client",
@@ -80,30 +91,84 @@ namespace is4aspid
                     AllowedCorsOrigins = { "http://localhost:5002" },
 
                     AllowedScopes = { "openid", "profile", "api1" }
-                },
+                },*/
+
                 new Client
                 {
-                    ClientId = "0oaaksrhn9lfhFOA64x6",
-                    ClientName = "Android",
+
+                    ClientId = "androidClient",
+                    ClientName = "AndroidClient",
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    RedirectUris = new List<string>
+
+                    RequireConsent = true,
+                    RedirectUris = {"com.is4:/login", "com.is4:/logout"},
+                    FrontChannelLogoutSessionRequired = false,
+                    BackChannelLogoutUri = "com.is4:/logout",
+
+                    AllowedScopes =
                     {
-                        "com.gmail.hofmarchermatthias.myapp:/login",
-                        "com.gmail.hofmarchermatthias.myapp:/logout"
+                        OidcConstants.StandardScopes.Email,
+                        OidcConstants.StandardScopes.OpenId,
+                        OidcConstants.StandardScopes.Profile,
+                        OidcConstants.StandardScopes.Address,
+                        OidcConstants.StandardScopes.Phone,
+                        "demoApi"
                     },
 
-                    PostLogoutRedirectUris = new List<string>
+
+                    AllowOfflineAccess = false
+                },
+
+                new Client
+                {
+                    ClientId = "postman-client",
+                    ClientName = "Postman Test Client",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = true,
+                    RedirectUris = {"https://www.getpostman.com/oauth2/callback"},
+                    PostLogoutRedirectUris = {"https://www.getpostman.com"},
+                    AllowedCorsOrigins = {"https://www.getpostman.com"},
+                    AllowedScopes =
                     {
-                        "com.gmail.hofmarchermatthias.myapp:/login"
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "todos_api",
+                        "dood"
+                    },
+                    ClientSecrets = new List<Secret>{new Secret("Pass$123".Sha256())}
+                },
+                new Client
+                {
+                    RequireClientSecret=false,
+                    ClientId = "doodadmin",
+                    ClientName = "Dood AdminClient",
+                    RequirePkce = true,
+                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = true,
+                    RedirectUris =
+                    {
+                        "http://localhost:8100/implicit/callback",
+                        "com.dood:/callback"
+                    },
+                    PostLogoutRedirectUris =
+                    {
+                        "http://localhost:8100/implicit/logout",
+                        "com.dood:/logout"
+                    },
+                    AllowedCorsOrigins = {"http://localhost:8100"},
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "dood"
                     },
                     AllowOfflineAccess = true,
-                    AllowedScopes = new List<string>
-                    {
-                        "openid","profile"
-                    }
-
                 }
             };
     }
