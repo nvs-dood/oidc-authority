@@ -36,10 +36,10 @@ namespace is4aspid
 
             try
             {
-                var seed = args.Contains("/seed");
+                var seed = true; //args.Contains("/seed"); //TODO maybe change
                 if (seed)
                 {
-                    args = args.Except(new[] { "/seed" }).ToArray();
+                    //args = args.Except(new[] { "/seed" }).ToArray();
                 }
 
                 var host = CreateHostBuilder(args).Build();
