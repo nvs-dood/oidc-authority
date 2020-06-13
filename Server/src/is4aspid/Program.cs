@@ -75,6 +75,7 @@ namespace is4aspid
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseSerilog();
+                    webBuilder.UseUrls("http://*:5000");
                 });
     }
 }
