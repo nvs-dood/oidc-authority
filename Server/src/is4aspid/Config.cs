@@ -153,11 +153,13 @@ namespace is4aspid
                     RedirectUris =
                     {
                         "http://localhost:8100/implicit/callback",
+                        "http://localhost:8100/callback",
                         "com.dood:/callback"
                     },
                     PostLogoutRedirectUris =
                     {
                         "http://localhost:8100/implicit/logout",
+                        "http://localhost:8100/logout",
                         "com.dood:/logout"
                     },
                     AllowedCorsOrigins = {"http://localhost:8100"},
